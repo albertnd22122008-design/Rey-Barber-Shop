@@ -1,0 +1,6 @@
+{
+  "name": "Rey Barber Shop",
+  "description": "Página web oficial y sistema de reservas de Rey Barber Shop: cortes exclusivos, gestión de turnos en tiempo real, academia de barbería y reseñas verificadas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
