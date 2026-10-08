@@ -9,6 +9,7 @@ import { ReviewsSection } from './components/ReviewsSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
+import { PWAInstallButton } from './components/PWAInstallButton';
 import { AuthModal } from './components/AuthModal';
 import { OwnerDashboardModal } from './components/OwnerDashboardModal';
 import { ClientAccountModal } from './components/ClientAccountModal';
@@ -92,6 +93,9 @@ const MainApp: React.FC = () => {
 
       {/* Floating WhatsApp Quick Action */}
       <FloatingWhatsApp />
+
+      {/* PWA Install Invitation Banner */}
+      <PWAInstallButton variant="banner" />
 
       {/* Auth Modal (Cliente / Dueño) */}
       <AuthModal

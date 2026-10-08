@@ -3,6 +3,7 @@ import { Calendar, Phone, Menu, X, User, ShieldCheck, Crown } from 'lucide-react
 import { BARBERSHOP_INFO } from '../data/barbershopData';
 import { BrandLogo } from './BrandLogo';
 import { useBarber } from '../context/BarberContext';
+import { PWAInstallButton } from './PWAInstallButton';
 
 interface NavbarProps {
   onOpenBooking: () => void;
@@ -129,6 +130,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               </button>
             )}
 
+            {/* PWA Install Button */}
+            <PWAInstallButton variant="navbar" />
+
             <button
               onClick={onOpenBooking}
               className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-neutral-950 font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40 active:scale-95 transition-all cursor-pointer whitespace-nowrap"
@@ -208,6 +212,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <Calendar className="w-4 h-4" />
                 <span>Reservar Cita Online</span>
               </button>
+
+              <div className="flex justify-center py-1">
+                <PWAInstallButton variant="navbar" />
+              </div>
 
               <button
                 onClick={() => {

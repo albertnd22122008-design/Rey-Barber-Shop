@@ -1,9 +1,26 @@
 @import "tailwindcss";
 
+/* 1. Netlify Badge & Watermark Complete Suppression */
+.netlify-badge,
+[data-netlify-badge],
+a[href*="netlify.com"] img,
+iframe[src*="netlify"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
 @layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
   }
 
   body {
@@ -12,11 +29,23 @@
     color: #f4f4f5;
     -webkit-overflow-scrolling: touch;
     overflow-x: hidden;
+    max-width: 100%;
+    width: 100%;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  /* Prevent automatic iOS zoom by setting min 16px font size on inputs, selects, textareas */
+  /* Prevent automatic iOS Safari zoom & guarantee interactive, fluid inputs */
   input, select, textarea {
     font-size: 16px !important;
+    touch-action: manipulation;
+    user-select: text !important;
+    -webkit-user-select: text !important;
+    max-width: 100%;
+  }
+
+  button, a {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 
   /* High-fidelity retina image optimization */

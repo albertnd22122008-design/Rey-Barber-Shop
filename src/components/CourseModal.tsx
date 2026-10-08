@@ -118,48 +118,52 @@ Por favor enviarme fechas de inicio, método de pago y cupos disponibles.`;
               {/* Form */}
               <form onSubmit={handleSubmit} className="pt-4 border-t border-neutral-800 space-y-4">
                 <h4 className="text-sm font-bold text-white uppercase tracking-wider">
-                  Solicitar Información / Reservar Cupo ({course.spotsLeft} cupos restantes)
+                  Solicitar Información e Inscripción al Curso
                 </h4>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
-                    <label className="block text-xs font-semibold text-neutral-300 mb-1">
+                    <label className="block text-xs font-semibold text-neutral-300 mb-1.5">
                       Tu Nombre Completo *
                     </label>
                     <input
                       type="text"
                       required
+                      autoComplete="name"
+                      autoCapitalize="words"
                       value={studentName}
                       onChange={(e) => setStudentName(e.target.value)}
                       placeholder="Ej: David Santana"
-                      className="w-full px-3 py-2 rounded-lg bg-neutral-950 border border-neutral-700 text-white placeholder-neutral-500 text-xs focus:outline-none focus:border-amber-400"
+                      className="w-full min-h-[48px] px-4 py-3 rounded-xl bg-neutral-950 border border-neutral-700 text-white placeholder-neutral-500 text-base focus:outline-none focus:border-amber-400 transition-colors"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-neutral-300 mb-1">
+                    <label className="block text-xs font-semibold text-neutral-300 mb-1.5">
                       Teléfono / WhatsApp *
                     </label>
                     <input
                       type="tel"
                       required
+                      autoComplete="tel"
+                      inputMode="tel"
                       value={studentPhone}
                       onChange={(e) => setStudentPhone(e.target.value)}
-                      placeholder="Ej: 829-555-9876"
-                      className="w-full px-3 py-2 rounded-lg bg-neutral-950 border border-neutral-700 text-white placeholder-neutral-500 text-xs focus:outline-none focus:border-amber-400"
+                      placeholder="Ej: 8295559876"
+                      className="w-full min-h-[48px] px-4 py-3 rounded-xl bg-neutral-950 border border-neutral-700 text-white placeholder-neutral-500 text-base focus:outline-none focus:border-amber-400 transition-colors"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
-                    <label className="block text-xs font-semibold text-neutral-300 mb-1">
+                    <label className="block text-xs font-semibold text-neutral-300 mb-1.5">
                       Nivel de Experiencia
                     </label>
                     <select
                       value={studentExperience}
                       onChange={(e) => setStudentExperience(e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg bg-neutral-950 border border-neutral-700 text-white text-xs focus:outline-none focus:border-amber-400"
+                      className="w-full min-h-[48px] px-4 py-3 rounded-xl bg-neutral-950 border border-neutral-700 text-white text-base focus:outline-none focus:border-amber-400 transition-colors cursor-pointer"
                     >
                       <option value="Sin experiencia previa (Principiante)">Sin experiencia previa (Principiante)</option>
                       <option value="Conocimientos básicos de máquina">Conocimientos básicos de máquina</option>
@@ -168,23 +172,24 @@ Por favor enviarme fechas de inicio, método de pago y cupos disponibles.`;
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-neutral-300 mb-1">
+                    <label className="block text-xs font-semibold text-neutral-300 mb-1.5">
                       Correo Electrónico (Opcional)
                     </label>
                     <input
                       type="email"
+                      autoComplete="email"
                       value={studentEmail}
                       onChange={(e) => setStudentEmail(e.target.value)}
                       placeholder="tucorreo@ejemplo.com"
-                      className="w-full px-3 py-2 rounded-lg bg-neutral-950 border border-neutral-700 text-white placeholder-neutral-500 text-xs focus:outline-none focus:border-amber-400"
+                      className="w-full min-h-[48px] px-4 py-3 rounded-xl bg-neutral-950 border border-neutral-700 text-white placeholder-neutral-500 text-base focus:outline-none focus:border-amber-400 transition-colors"
                     />
                   </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-3">
                   <button
                     type="submit"
-                    className="w-full sm:w-auto px-6 py-3 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold text-xs uppercase tracking-wider rounded-xl flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-amber-500/20"
+                    className="w-full sm:w-auto min-h-[48px] px-6 py-3.5 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold text-xs uppercase tracking-wider rounded-xl flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-amber-500/20 active:scale-95 transition-transform"
                   >
                     <Send className="w-4 h-4" />
                     <span>Registrar Solicitud</span>
@@ -194,7 +199,7 @@ Por favor enviarme fechas de inicio, método de pago y cupos disponibles.`;
                     href={getWhatsAppCourseLink()}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full sm:w-auto px-5 py-3 bg-neutral-800 hover:bg-neutral-700 text-emerald-400 font-semibold text-xs rounded-xl flex items-center justify-center gap-2 border border-neutral-700 transition-colors"
+                    className="w-full sm:w-auto min-h-[48px] px-5 py-3.5 bg-neutral-800 hover:bg-neutral-700 text-emerald-400 font-semibold text-xs rounded-xl flex items-center justify-center gap-2 border border-neutral-700 transition-colors active:scale-95"
                   >
                     <Phone className="w-4 h-4" />
                     <span>Preguntar por WhatsApp</span>
