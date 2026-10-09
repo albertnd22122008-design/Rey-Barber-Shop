@@ -95,14 +95,14 @@ export const FloatingWhatsApp: React.FC = () => {
         </div>
       )}
 
-      {/* Floating Button */}
+      {/* Floating Button con Micro-animación de Pulso */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center shadow-2xl hover:shadow-emerald-600/50 transition-all hover:scale-105 active:scale-95 cursor-pointer relative group"
+        className="w-14 h-14 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center shadow-2xl hover:shadow-emerald-600/60 transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer relative group"
         aria-label="Contactar por WhatsApp"
       >
-        <MessageCircle className="w-7 h-7" />
-        <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-amber-400 text-neutral-950 text-[10px] font-black flex items-center justify-center">
+        <MessageCircle className="w-7 h-7 group-hover:rotate-12 transition-transform duration-300" />
+        <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-amber-400 text-neutral-950 text-[10px] font-black flex items-center justify-center animate-bounce">
           1
         </span>
       </button>

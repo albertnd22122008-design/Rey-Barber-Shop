@@ -113,6 +113,89 @@ iframe[src*="netlify"] {
   box-shadow: 0 0 25px -5px rgba(212, 175, 55, 0.25);
 }
 
+/* 2. Micro-interacciones & Animaciones Premium */
+
+/* Botón Hero Pulse: Efecto de latido continuo, sutil y elegante */
+@keyframes luxury-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.5), 0 10px 25px -5px rgba(245, 158, 11, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(245, 158, 11, 0), 0 16px 30px -4px rgba(245, 158, 11, 0.45);
+  }
+}
+
+.btn-hero-pulse {
+  animation: luxury-pulse 3.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Micro-animación de tijeras cortando */
+@keyframes scissor-snip {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(-22deg); }
+  50% { transform: rotate(10deg); }
+  75% { transform: rotate(-12deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.animate-scissor-snip {
+  display: inline-block;
+  transform-origin: 45% 55%;
+  animation: scissor-snip 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.group:hover .group-hover-scissor {
+  animation: scissor-snip 0.75s ease-in-out 2;
+}
+
+/* Micro-animación suave de pin de mapa */
+@keyframes pin-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.animate-pin-float {
+  animation: pin-float 2.5s ease-in-out infinite;
+}
+
+/* Hover Elevado con Sombra Dinámica (Agencia de Lujo $1,000 USD) */
+.card-luxury {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s ease,
+              background-color 0.35s ease;
+  will-change: transform, box-shadow;
+}
+
+.card-luxury:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 22px 40px -12px rgba(0, 0, 0, 0.8),
+              0 0 30px -4px rgba(245, 158, 11, 0.22);
+  border-color: rgba(245, 158, 11, 0.5);
+}
+
+/* Interacción en Chips de Horario (Time Slots) */
+.chip-time-slot {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background-color 0.25s ease,
+              border-color 0.25s ease,
+              color 0.25s ease,
+              box-shadow 0.25s ease;
+}
+
+.chip-time-slot:hover {
+  transform: translateY(-2px);
+}
+
+.chip-time-slot:active {
+  transform: scale(0.95);
+}
+
+.chip-time-slot-active {
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 8px 20px -2px rgba(245, 158, 11, 0.45);
+}
+
 /* Custom dark scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

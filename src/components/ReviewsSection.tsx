@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Star, ThumbsUp, Heart, MessageSquare, CheckCircle, ShieldCheck, PenSquare } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { GOOGLE_REVIEWS, BARBERSHOP_INFO } from '../data/barbershopData';
 import { GoogleReview } from '../types';
 import { ReviewModal } from './ReviewModal';
@@ -20,10 +21,9 @@ export const ReviewsSection: React.FC = () => {
       return a.rating - b.rating;
     }
     if (sortBy === 'recientes') {
-      // Prioritize reviews marked as recent or with smaller time ago
       return a.id.localeCompare(b.id);
     }
-    // 'relevantes': default order (prioritizing local guides with owner replies)
+    // 'relevantes': default order
     const scoreA = (a.isLocalGuide ? 2 : 0) + (a.ownerReply ? 2 : 0) + (a.likesCount || 0);
     const scoreB = (b.isLocalGuide ? 2 : 0) + (b.ownerReply ? 2 : 0) + (b.likesCount || 0);
     return scoreB - scoreA;
@@ -51,15 +51,24 @@ export const ReviewsSection: React.FC = () => {
   const totalReviews = reviewsList.length;
 
   return (
-    <section id="opiniones" className="py-24 bg-neutral-900/60 border-t border-neutral-800 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Title */}
-        <div className="text-center max-w-2xl mx-auto mb-14">
+    <section id="opiniones" className="py-24 bg-neutral-900/60 border-t border-neutral-800 relative overflow-hidden">
+      {/* Background ambient lighting */}
+      <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Section Title con Revelación Suave */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center max-w-2xl mx-auto mb-14"
+        >
           <div className="flex justify-center mb-3">
             <BrandLogo size="md" showText={false} />
           </div>
           <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20 mb-3">
-            <Star className="w-3.5 h-3.5 fill-amber-400" />
+            <Star className="w-3.5 h-3.5 fill-amber-400 animate-pulse" />
             Opiniones de Google
           </div>
           <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
@@ -68,10 +77,16 @@ export const ReviewsSection: React.FC = () => {
           <p className="mt-2 text-sm sm:text-base text-neutral-400">
             Resumen auténtico de valoraciones en Google Maps para <strong className="text-white">Rey Barber Shop</strong>.
           </p>
-        </div>
+        </motion.div>
 
-        {/* Google Reviews Summary Card (Exact Layout from Google Maps) */}
-        <div className="max-w-4xl mx-auto bg-neutral-950 border border-neutral-800 rounded-2xl p-6 sm:p-8 shadow-2xl mb-12">
+        {/* Google Reviews Summary Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="card-luxury max-w-4xl mx-auto bg-neutral-950 border border-neutral-800 rounded-2xl p-6 sm:p-8 shadow-2xl mb-12"
+        >
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
             {/* Big Rating Number */}
             <div className="md:col-span-5 text-center md:text-left flex flex-col items-center md:items-start justify-center border-b md:border-b-0 md:border-r border-neutral-800 pb-6 md:pb-0 md:pr-8">
@@ -108,27 +123,25 @@ export const ReviewsSection: React.FC = () => {
 
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="mt-4 px-4 py-2 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 hover:text-white rounded-lg text-xs font-semibold flex items-center gap-2 border border-neutral-700 cursor-pointer transition-colors"
+                className="mt-5 w-full sm:w-auto px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-neutral-950 font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer active:scale-95"
               >
-                <PenSquare className="w-3.5 h-3.5 text-amber-400" />
-                <span>Escribir una opinión</span>
+                <PenSquare className="w-3.5 h-3.5" />
+                <span>Escribir una Opinión</span>
               </button>
             </div>
 
-            {/* Star Distribution Bars */}
-            <div className="md:col-span-7 space-y-2">
-              {[5, 4, 3, 2, 1].map((stars) => {
-                const count = starCounts[stars as keyof typeof starCounts];
+            {/* Bars */}
+            <div className="md:col-span-7 space-y-2 text-xs">
+              {[5, 4, 3, 2, 1].map((star) => {
+                const count = starCounts[star as keyof typeof starCounts];
                 const percentage = totalReviews > 0 ? (count / totalReviews) * 100 : 0;
                 return (
-                  <div key={stars} className="flex items-center gap-3 text-xs">
-                    <span className="w-3 font-semibold text-neutral-400 text-right">
-                      {stars}
-                    </span>
-                    <Star className="w-3.5 h-3.5 text-neutral-500 fill-neutral-500" />
-                    <div className="flex-1 h-2.5 bg-neutral-900 rounded-full overflow-hidden border border-neutral-800/80">
+                  <div key={star} className="flex items-center gap-3">
+                    <span className="w-3 font-semibold text-neutral-300">{star}</span>
+                    <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400 shrink-0" />
+                    <div className="flex-1 h-2.5 bg-neutral-800 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-amber-400 rounded-full transition-all duration-500"
+                        className="h-full bg-amber-400 rounded-full transition-all duration-700 ease-out"
                         style={{ width: `${percentage}%` }}
                       />
                     </div>
@@ -140,53 +153,33 @@ export const ReviewsSection: React.FC = () => {
               })}
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Sorting Bar */}
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-6 border-b border-neutral-800 gap-4">
           <div className="flex items-center gap-2 text-xs text-neutral-400">
             <span className="font-semibold text-neutral-300">Ordenar por:</span>
             <div className="flex items-center gap-1.5 flex-wrap">
-              <button
-                onClick={() => setSortBy('relevantes')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
-                  sortBy === 'relevantes'
-                    ? 'bg-amber-500 text-neutral-950'
-                    : 'bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800'
-                }`}
-              >
-                Más relevantes
-              </button>
-              <button
-                onClick={() => setSortBy('recientes')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
-                  sortBy === 'recientes'
-                    ? 'bg-amber-500 text-neutral-950'
-                    : 'bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800'
-                }`}
-              >
-                Más recientes
-              </button>
-              <button
-                onClick={() => setSortBy('alta')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
-                  sortBy === 'alta'
-                    ? 'bg-amber-500 text-neutral-950'
-                    : 'bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800'
-                }`}
-              >
-                Más alta
-              </button>
-              <button
-                onClick={() => setSortBy('baja')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
-                  sortBy === 'baja'
-                    ? 'bg-amber-500 text-neutral-950'
-                    : 'bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800'
-                }`}
-              >
-                Más baja
-              </button>
+              {(
+                [
+                  { id: 'relevantes', label: 'Más relevantes' },
+                  { id: 'recientes', label: 'Más recientes' },
+                  { id: 'alta', label: 'Más alta' },
+                  { id: 'baja', label: 'Más baja' },
+                ] as const
+              ).map((s) => (
+                <button
+                  key={s.id}
+                  onClick={() => setSortBy(s.id)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 cursor-pointer active:scale-95 ${
+                    sortBy === s.id
+                      ? 'bg-amber-500 text-neutral-950 font-bold shadow-md'
+                      : 'bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800 hover:border-neutral-700'
+                  }`}
+                >
+                  {s.label}
+                </button>
+              ))}
             </div>
           </div>
 
@@ -195,100 +188,111 @@ export const ReviewsSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Reviews List */}
+        {/* Reviews List con Carga Escalonada & Card Luxury Hover */}
         <div className="max-w-4xl mx-auto space-y-5">
-          {sortedReviews.map((rev) => {
-            const extraLikes = userLikes[rev.id] || 0;
-            const currentLikes = (rev.likesCount || 0) + extraLikes;
+          <AnimatePresence mode="popLayout">
+            {sortedReviews.map((rev, idx) => {
+              const extraLikes = userLikes[rev.id] || 0;
+              const currentLikes = (rev.likesCount || 0) + extraLikes;
 
-            return (
-              <div
-                key={rev.id}
-                className="p-5 sm:p-6 rounded-2xl bg-neutral-950 border border-neutral-800 hover:border-neutral-700/80 transition-all text-neutral-200"
-              >
-                {/* Author row */}
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    {/* Avatar circle with initial */}
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-600 to-neutral-800 text-white font-bold flex items-center justify-center text-sm shadow-md uppercase">
-                      {rev.author.charAt(0)}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h4 className="text-sm font-bold text-white">
-                          {rev.author}
-                        </h4>
-                        {rev.isLocalGuide && (
-                          <span className="text-[10px] font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
-                            Local Guide
-                          </span>
-                        )}
+              return (
+                <motion.div
+                  key={rev.id}
+                  layout
+                  initial={{ opacity: 0, y: 25 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.98 }}
+                  transition={{ duration: 0.45, delay: (idx % 8) * 0.05, ease: [0.16, 1, 0.3, 1] }}
+                  className="card-luxury p-5 sm:p-6 rounded-2xl bg-neutral-950 border border-neutral-800 text-neutral-200 cursor-default"
+                >
+                  {/* Author row */}
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                      {/* Avatar circle with initial */}
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-600 to-neutral-800 text-white font-bold flex items-center justify-center text-sm shadow-md uppercase">
+                        {rev.author.charAt(0)}
                       </div>
-                      <div className="text-[11px] text-neutral-400">
-                        {rev.guideStats ? rev.guideStats : 'Cliente verificado'}
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h4 className="text-sm font-bold text-white">
+                            {rev.author}
+                          </h4>
+                          {rev.isLocalGuide && (
+                            <span className="text-[10px] font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                              Local Guide
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-[11px] text-neutral-400">
+                          {rev.guideStats ? rev.guideStats : 'Cliente verificado'}
+                        </div>
                       </div>
                     </div>
+
+                    <span className="text-[11px] text-neutral-500 shrink-0">
+                      {rev.timeAgo}
+                    </span>
                   </div>
 
-                  <span className="text-[11px] text-neutral-500 shrink-0">
-                    {rev.timeAgo}
-                  </span>
-                </div>
+                  {/* Stars */}
+                  <div className="flex items-center gap-1 my-3">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`w-3.5 h-3.5 ${
+                          i < rev.rating
+                            ? 'text-amber-400 fill-amber-400'
+                            : 'text-neutral-700'
+                        }`}
+                      />
+                    ))}
+                  </div>
 
-                {/* Stars */}
-                <div className="flex items-center gap-1 my-3">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`w-3.5 h-3.5 ${
-                        i < rev.rating
-                          ? 'text-amber-400 fill-amber-400'
-                          : 'text-neutral-700'
+                  {/* Review Body */}
+                  <p className="text-sm text-neutral-300 leading-relaxed">
+                    {rev.content}
+                  </p>
+
+                  {/* Interactive Like / Reaction */}
+                  <div className="flex items-center gap-4 mt-3 pt-3 border-t border-neutral-900 text-xs">
+                    <button
+                      onClick={() => handleLike(rev.id)}
+                      className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition-all cursor-pointer active:scale-95 ${
+                        extraLikes > 0
+                          ? 'text-amber-400 bg-amber-500/10 font-bold'
+                          : 'text-neutral-400 hover:text-white hover:bg-neutral-900'
                       }`}
-                    />
-                  ))}
-                </div>
+                    >
+                      <ThumbsUp className={`w-3.5 h-3.5 ${extraLikes > 0 ? 'fill-amber-400' : ''}`} />
+                      <span>Útil ({currentLikes})</span>
+                    </button>
 
-                {/* Review Body */}
-                <p className="text-sm text-neutral-300 leading-relaxed">
-                  {rev.content}
-                </p>
-
-                {/* Interactive Like / Reaction */}
-                <div className="flex items-center gap-4 mt-3 pt-3 border-t border-neutral-900 text-xs">
-                  <button
-                    onClick={() => handleLike(rev.id)}
-                    className="flex items-center gap-1.5 text-neutral-400 hover:text-red-400 transition-colors cursor-pointer group"
-                  >
-                    <Heart className={`w-3.5 h-3.5 ${currentLikes > 0 ? 'text-red-500 fill-red-500' : 'group-hover:scale-110 transition-transform'}`} />
-                    <span>{currentLikes > 0 ? currentLikes : 'Me gusta'}</span>
-                  </button>
-                </div>
-
-                {/* Owner Reply if available (as requested by user!) */}
-                {rev.ownerReply && (
-                  <div className="mt-4 pl-4 border-l-2 border-amber-500/60 bg-neutral-900/60 p-3.5 rounded-r-xl">
-                    <div className="flex items-center justify-between text-xs mb-1">
-                      <span className="font-bold text-amber-400 flex items-center gap-2">
-                        <BrandLogo size="sm" showText={false} />
-                        <span>{rev.ownerReply.author}</span>
-                      </span>
-                      <span className="text-[10px] text-neutral-500">
-                        {rev.ownerReply.timeAgo}
-                      </span>
-                    </div>
-                    <p className="text-xs text-neutral-300">
-                      {rev.ownerReply.content}
-                    </p>
+                    <span className="text-neutral-600">·</span>
+                    <span className="text-[11px] text-neutral-500 flex items-center gap-1">
+                      <ShieldCheck className="w-3.5 h-3.5 text-teal-400" />
+                      Visita presencial verificada
+                    </span>
                   </div>
-                )}
-              </div>
-            );
-          })}
+
+                  {/* Owner Response if present */}
+                  {rev.ownerReply && (
+                    <div className="mt-4 p-3.5 rounded-xl bg-neutral-900/70 border border-neutral-800 text-xs text-neutral-300 space-y-1">
+                      <div className="flex items-center gap-2 text-amber-400 font-bold">
+                        <BrandLogo size="sm" showText={false} />
+                        <span>Respuesta de Rey Barber Shop (Dueño)</span>
+                      </div>
+                      <p className="text-neutral-400 text-xs pl-6">
+                        &ldquo;{rev.ownerReply.content}&rdquo;
+                      </p>
+                    </div>
+                  )}
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
         </div>
       </div>
 
-      {/* Review Modal */}
       <ReviewModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

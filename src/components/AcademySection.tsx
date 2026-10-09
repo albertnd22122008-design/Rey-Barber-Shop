@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { GraduationCap, Clock, CheckCircle2, Users, Award, BookOpen, ChevronRight, Sparkles } from 'lucide-react';
-import { COURSES, ACADEMY_IMAGE } from '../data/barbershopData';
+import { motion } from 'motion/react';
+import { COURSES } from '../data/barbershopData';
 import { CourseItem } from '../types';
 import { CourseModal } from './CourseModal';
 import { BrandLogo } from './BrandLogo';
@@ -15,15 +16,24 @@ export const AcademySection: React.FC = () => {
   };
 
   return (
-    <section id="academia" className="py-24 bg-neutral-900/50 border-t border-neutral-800 relative">
+    <section id="academia" className="py-24 bg-neutral-900/50 border-t border-neutral-800 relative overflow-hidden">
+      {/* Background ambient lighting */}
+      <div className="absolute top-1/3 right-10 w-96 h-96 bg-blue-600/5 rounded-full blur-3xl pointer-events-none" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        {/* Header con Revelación Suave */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center max-w-3xl mx-auto mb-16"
+        >
           <div className="flex justify-center mb-3">
             <BrandLogo size="md" showText={false} />
           </div>
           <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-400 bg-amber-500/10 px-3.5 py-1.5 rounded-full border border-amber-500/20 mb-3">
-            <GraduationCap className="w-4 h-4" />
+            <GraduationCap className="w-4 h-4 animate-bounce" />
             Rey Barber Academy · Escuela de Alta Formación
           </div>
           <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
@@ -48,31 +58,36 @@ export const AcademySection: React.FC = () => {
               Prácticas en Modelos Reales
             </span>
           </div>
-        </div>
+        </motion.div>
 
-        {/* 3 Courses Grid */}
+        {/* 3 Courses Grid con Carga Escalonada & Card Luxury Hover */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {COURSES.map((course) => (
-            <div
+          {COURSES.map((course, idx) => (
+            <motion.div
               key={course.id}
-              className="bg-neutral-950 rounded-2xl border border-neutral-800 hover:border-amber-500/50 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-xl hover:shadow-2xl hover:shadow-amber-500/5 group"
+              initial={{ opacity: 0, y: 35 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.6, delay: idx * 0.12, ease: [0.16, 1, 0.3, 1] }}
+              className="card-luxury bg-neutral-950 rounded-2xl border border-neutral-800 flex flex-col justify-between overflow-hidden shadow-xl group cursor-pointer"
+              onClick={() => handleOpenCourseInfo(course)}
             >
-              {/* Card visual banner - clear HD rendering without dark heavy overlay */}
+              {/* Card visual banner */}
               <div className="relative h-52 w-full overflow-hidden bg-neutral-900">
                 <img
                   src={course.image}
                   alt={course.title}
-                  className="w-full h-full object-cover object-center img-optimized group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover object-center img-optimized group-hover:scale-108 transition-transform duration-700 ease-out"
                   referrerPolicy="no-referrer"
                   loading="lazy"
                 />
 
                 {/* Level Tag */}
-                <div className="absolute top-3 left-3 px-2.5 py-1 bg-black/80 border border-white/10 text-[10px] font-bold uppercase tracking-wider text-amber-400 rounded-md shadow z-10">
+                <div className="absolute top-3 left-3 px-2.5 py-1 bg-black/80 border border-white/10 text-[10px] font-bold uppercase tracking-wider text-amber-400 rounded-md shadow z-10 backdrop-blur-sm">
                   {course.level}
                 </div>
 
-                <div className="absolute bottom-3 left-3 text-xs text-neutral-200 flex items-center gap-1.5 bg-black/80 px-2.5 py-1 rounded-md border border-white/10 shadow-sm z-10">
+                <div className="absolute bottom-3 left-3 text-xs text-neutral-200 flex items-center gap-1.5 bg-black/80 px-2.5 py-1 rounded-md border border-white/10 shadow-sm z-10 backdrop-blur-sm">
                   <Clock className="w-3.5 h-3.5 text-amber-400" />
                   <span className="font-medium">{course.duration}</span>
                 </div>
@@ -109,8 +124,8 @@ export const AcademySection: React.FC = () => {
                     <div className="text-[11px] font-bold text-neutral-300 uppercase tracking-wider">
                       Temas Destacados:
                     </div>
-                    {course.modules.slice(0, 3).map((mod, idx) => (
-                      <div key={idx} className="flex items-start gap-2 text-xs text-neutral-300">
+                    {course.modules.slice(0, 3).map((mod, modIdx) => (
+                      <div key={modIdx} className="flex items-start gap-2 text-xs text-neutral-300">
                         <CheckCircle2 className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
                         <span className="line-clamp-2">{mod}</span>
                       </div>
@@ -118,17 +133,20 @@ export const AcademySection: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Primary CTA button for the course as requested */}
+                {/* Primary CTA button with micro-interaction */}
                 <button
-                  onClick={() => handleOpenCourseInfo(course)}
-                  className="w-full py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-neutral-950 font-black text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-amber-500/15 group/btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleOpenCourseInfo(course);
+                  }}
+                  className="w-full py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-neutral-950 font-black text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-amber-500/15 group/btn active:scale-95"
                 >
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>Solicitar Información del Curso</span>
                   <ChevronRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
                 </button>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

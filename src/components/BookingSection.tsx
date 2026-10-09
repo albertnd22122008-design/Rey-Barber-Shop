@@ -19,6 +19,7 @@ import { SERVICES, BARBERS, BARBERSHOP_INFO } from '../data/barbershopData';
 import { ServiceItem, Barber, BookingFormData } from '../types';
 import { useBarber } from '../context/BarberContext';
 import { BrandLogo } from './BrandLogo';
+import { motion } from 'motion/react';
 
 interface BookingSectionProps {
   initialServiceId?: string;
@@ -291,13 +292,19 @@ Teléfono: ${finalPhone}`;
       <div className="absolute top-10 right-10 w-72 h-72 bg-blue-600/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Heading */}
-        <div className="text-center max-w-2xl mx-auto mb-12">
+        {/* Section Heading con Revelación Suave */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center max-w-2xl mx-auto mb-12"
+        >
           <div className="flex justify-center mb-3">
             <BrandLogo size="md" showText={false} />
           </div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-bold uppercase tracking-wider mb-3">
-            <Sparkles className="w-3.5 h-3.5" />
+            <Sparkles className="w-3.5 h-3.5 animate-spin-slow" />
             Sistema de Citas en Tiempo Real
           </div>
           <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
@@ -306,10 +313,17 @@ Teléfono: ${finalPhone}`;
           <p className="mt-3 text-sm sm:text-base text-neutral-400">
             Elige el servicio, selecciona tu fecha y hora preferida, y recibe confirmación inmediata vía WhatsApp.
           </p>
-        </div>
+        </motion.div>
 
-        {/* Booking Container */}
-        <div ref={containerRef} className="max-w-5xl mx-auto bg-neutral-950 rounded-2xl border border-neutral-800 shadow-2xl overflow-hidden scroll-mt-24">
+        {/* Booking Container con Revelación y Sombra */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          ref={containerRef}
+          className="max-w-5xl mx-auto bg-neutral-950 rounded-2xl border border-neutral-800 shadow-2xl overflow-hidden scroll-mt-24"
+        >
           {/* Progress Indicator - Mobile-Optimized Stepper / Wizard */}
           <div className="grid grid-cols-4 border-b border-neutral-800 text-center text-xs bg-neutral-900/60 sticky top-0 z-20 backdrop-blur-md">
             <button
@@ -404,9 +418,9 @@ Teléfono: ${finalPhone}`;
                         <div
                           key={s.id}
                           onClick={() => setSelectedServiceId(s.id)}
-                          className={`p-4 rounded-xl border transition-all cursor-pointer flex flex-col justify-between min-h-[120px] active:scale-[0.99] touch-manipulation select-none ${
+                          className={`card-luxury p-4 rounded-xl border cursor-pointer flex flex-col justify-between min-h-[120px] active:scale-[0.98] touch-manipulation select-none ${
                             isSelected
-                              ? 'border-amber-400 bg-gradient-to-br from-amber-500/15 to-neutral-900 text-white shadow-md ring-1 ring-amber-400/40'
+                              ? 'border-amber-400 bg-gradient-to-br from-amber-500/20 to-neutral-900 text-white shadow-lg ring-1 ring-amber-400/50 scale-[1.01]'
                               : 'border-neutral-800/80 bg-neutral-900/50 hover:border-neutral-700 text-neutral-300'
                           }`}
                         >
@@ -540,9 +554,9 @@ Teléfono: ${finalPhone}`;
                               timeSlotsRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                             }
                           }}
-                          className={`flex-shrink-0 w-20 min-h-[78px] py-3 px-2 rounded-xl border text-center transition-all cursor-pointer active:scale-95 touch-manipulation select-none ${
+                          className={`chip-time-slot flex-shrink-0 w-20 min-h-[78px] py-3 px-2 rounded-xl border text-center cursor-pointer touch-manipulation select-none ${
                             isSelected
-                              ? 'border-amber-400 bg-amber-500 text-neutral-950 font-bold shadow-lg shadow-amber-500/20 scale-105'
+                              ? 'chip-time-slot-active border-amber-400 bg-amber-500 text-neutral-950 font-bold shadow-lg shadow-amber-500/30'
                               : 'border-neutral-800 bg-neutral-900/60 text-neutral-300 hover:border-neutral-700 hover:bg-neutral-800/80'
                           }`}
                         >
@@ -590,9 +604,9 @@ Teléfono: ${finalPhone}`;
                           key={time}
                           type="button"
                           onClick={() => setSelectedTime(time)}
-                          className={`min-h-[52px] py-2.5 px-3 rounded-xl border text-center transition-all cursor-pointer relative flex flex-col items-center justify-center gap-1 active:scale-95 touch-manipulation select-none ${
+                          className={`chip-time-slot min-h-[52px] py-2.5 px-3 rounded-xl border text-center cursor-pointer relative flex flex-col items-center justify-center gap-1 touch-manipulation select-none ${
                             isSelected
-                              ? 'border-amber-400 bg-amber-500 text-neutral-950 shadow-md ring-2 ring-amber-400/40'
+                              ? 'chip-time-slot-active border-amber-400 bg-amber-500 text-neutral-950 shadow-lg ring-2 ring-amber-400/50'
                               : isBooked
                               ? 'border-amber-600/50 bg-amber-950/30 text-amber-200 hover:border-amber-500'
                               : freed
@@ -795,7 +809,7 @@ Teléfono: ${finalPhone}`;
                 </div>
 
                 {/* Resumen del Pedido / Boleto Previo */}
-                <div className="p-4 rounded-xl bg-gradient-to-r from-neutral-900 to-neutral-950 border border-amber-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="card-luxury p-4 rounded-xl bg-gradient-to-r from-neutral-900 to-neutral-950 border border-amber-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
                     <BrandLogo size="sm" showText={false} />
                     <div>
@@ -962,7 +976,7 @@ Teléfono: ${finalPhone}`;
               </div>
             )}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
